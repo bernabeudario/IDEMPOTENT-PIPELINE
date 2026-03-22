@@ -84,7 +84,7 @@ with col_status:
 
 with col_init:
     st.write("")
-    if st.button("🦆 Inicializar Base de Datos", use_container_width=True, type="secondary", help="Ejecuta etls/init_db.py.",disabled=st.session_state.init_running, on_click=start_init):
+    if st.button("🦆 Inicializar Base de Datos", width='stretch', type="secondary", help="Ejecuta etls/init_db.py.",disabled=st.session_state.init_running, on_click=start_init):
         with st.spinner("Inicializando Base de Datos y cargando datos de ejemplo..."):
             result = subprocess.run([sys.executable, "etls/init_db.py"], capture_output=True, text=True)
             
@@ -107,7 +107,7 @@ col_bronze, col_etl, col_silver = st.columns(3)
 with col_bronze:
     st.subheader("🥉 Bronze Events")
     df_bronze = fetch_table_data("bronze.events", "event_date DESC")
-    st.dataframe(df_bronze, use_container_width=True, hide_index=True)
+    st.dataframe(df_bronze, width='stretch', hide_index=True)
 
 with col_etl:
     st.subheader("⚙️ Ejecutar ETL")
@@ -183,12 +183,12 @@ with col_etl:
             st.success(st.session_state.etl_toast, icon="✅")
             st.code(st.session_state.etl_code, language="text")
         
-        st.button("🧹 Limpiar resultados", on_click=clear_etl_results, use_container_width=True)
+        st.button("🧹 Limpiar resultados", on_click=clear_etl_results, width='stretch')
 
 with col_silver:
     st.subheader("🥈 Silver Events")
     df_silver = fetch_table_data("silver.events", "event_date DESC")
-    st.dataframe(df_silver, use_container_width=True, hide_index=True, column_config={"uuid": st.column_config.Column(width="small")})
+    st.dataframe(df_silver, width='stretch', hide_index=True, column_config={"uuid": st.column_config.Column(width="small")})
 
 st.divider()
 
@@ -198,7 +198,7 @@ with col_audit_title:
     st.header("Auditoría de Metadata")
 with col_audit_btn:
     st.write("")
-    if st.button("🗑️ Borrar datos", use_container_width=True, help="Borra todos los registros."):
+    if st.button("🗑️ Borrar datos", width='stretch', help="Borra todos los registros."):
         if db_exists():
             try:
                 with duckdb.connect(DB_PATH) as conn:
@@ -213,4 +213,4 @@ if "audit_toast" in st.session_state:
     del st.session_state.audit_toast
 
 df_audit = fetch_table_data("metadata.etl_audit", "updated_at DESC")
-st.dataframe(df_audit, use_container_width=True, hide_index=True)
+st.dataframe(df_audit, width='stretch', hide_index=True)
