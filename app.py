@@ -4,6 +4,7 @@ import pandas as pd
 import os
 import sys
 import subprocess
+import uuid
 from datetime import datetime, timedelta
 
 DB_PATH = "db/database.db"
@@ -20,7 +21,15 @@ def fetch_table_data(table_name, order_by=None):
             query = f"SELECT * FROM {table_name}"
             if order_by:
                 query += f" ORDER BY {order_by}"
-            return conn.execute(query).df()
+            df = conn.execute(query).df()
+            
+            # PyArrow no reconoce objetos UUID de Python, los convertimos a string
+            for col in df.columns:
+                if df[col].dtype == 'object' and not df[col].empty:
+                    if isinstance(df[col].iloc[0], uuid.UUID):
+                        df[col] = df[col].astype(str)
+                
+            return df
     except Exception as e:
         # Silencia errores de tabla no existente en la primera corrida antes de init_db
         return pd.DataFrame()
