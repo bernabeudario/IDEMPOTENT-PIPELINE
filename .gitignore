@@ -1,0 +1,6 @@
+.venv/
+.env/
+__pycache__/
+etls/__pycache__/
+db/
+img-portada.jpg
