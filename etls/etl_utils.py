@@ -6,8 +6,8 @@ def get_etl_parameters() -> dict:
     Parsea y devuelve los parámetros de línea de comandos
     """
     parser = argparse.ArgumentParser(description="ETL Process Configuration")
-    parser.add_argument("--start_date", type=str, default=None, help="Fecha inicio para backfill y catchup(YYYY-MM-DD)")
-    parser.add_argument("--end_date", type=str, default=None, help="Fecha fin para backfill (YYYY-MM-DD)")
+    parser.add_argument("--start_date", type=str, default=None)
+    parser.add_argument("--end_date", type=str, default=None)
     parser.add_argument("--catchup", type=str, default="false", choices=["true", "false"])
     parser.add_argument("--backfill", type=str, default="false", choices=["true", "false"])
     
