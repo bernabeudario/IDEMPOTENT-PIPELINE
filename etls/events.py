@@ -50,13 +50,16 @@ def main(params=None):
             conn.execute("""
                 INSERT INTO silver.events (uuid, event_date, user_mail, event, system)
                 SELECT 
-                    uuid() as uuid, 
-                    br.event_date,
-                    split(br.user_mail, '@')[1] as user_mail,
-                    UPPER(br.event) as event,
-                    UPPER(LEFT(br.system, 1)) as system
-                FROM bronze.events br
-                WHERE br.event_date >= ? AND br.event_date <= ?
+                 uuid() as uuid
+                ,br.event_date
+                ,split(br.user_mail, '@')[1] as user_mail
+                ,UPPER(br.event) as event
+                ,UPPER(LEFT(br.system, 1)) as system
+                FROM
+                bronze.events br
+                WHERE 1 = 1
+                AND br.event_date >= ? 
+                AND br.event_date <= ?
             """, [p_start_date, p_end_date])
             
             conn.execute("COMMIT")
